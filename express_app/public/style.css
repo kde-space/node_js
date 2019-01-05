@@ -18,3 +18,21 @@ p {
   font-size: 16px;
   line-height: 2;
 }
+
+table {
+  margin: 20px;
+}
+
+table tr th {
+  padding: 3px 10px;
+  color: #fff;
+  text-align: center;
+  background-color: #999;
+}
+
+table tr td {
+  padding: 3px 10px;
+  color: #666;
+  text-align: left;
+  background-color: #eee;
+}

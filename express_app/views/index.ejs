@@ -14,6 +14,16 @@
   <main>
     <p><%- content %></p>
     <p><a href="<%= link.href %>"><%= link.text %></a></p>
+    <form action="/" method="post">
+      <p><input type="text" name="message"><input type="submit" value="送信"></p>
+    </form>
+    <p>
+      <table>
+        <% Object.entries(data).forEach(item => { %>
+          <%- include('data_item', { key: item[0], val: item[1] }); %>
+        <% }) %>
+      </table>
+    </p>
   </main>
 </body>
 </html>
