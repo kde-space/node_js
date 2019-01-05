@@ -10,11 +10,12 @@ app.use(express.static('public'));
 // トップページ
 app.get('/', (req, res) => {
   const msg = 'This is Index Page!<br>これはトップページです';
+  const url = '/other?name=tom&pass=123'
   res.render('index.ejs', {
     title: 'Index',
     content: msg,
     link: {
-      href: '/other',
+      href: url,
       text: '※別のページに移動'
     }
   });
@@ -22,7 +23,8 @@ app.get('/', (req, res) => {
 
 // otherページ
 app.get('/other', (req, res) => {
-  const msg = 'This is Other Page!<br>これはその他ページです';
+  const { name, pass }  = req.query;
+  const msg = `あなたの名前は「${name}」<br>パスワードは「${pass}」です`;
   res.render('index.ejs', {
     title: 'Other',
     content: msg,
