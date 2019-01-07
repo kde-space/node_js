@@ -3,7 +3,10 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  const msg = '※何か書いて送信してください。'
+  let msg = '※何か書いて送信してください。'
+  if (req.session.message !== undefined) {
+    msg = `Last message: ${req.session.message}`;
+  }
   const data = {
     title: 'Hello',
     content: msg
@@ -13,11 +16,10 @@ router.get('/', function(req, res, next) {
 
 router.post('/post', (req, res, next) => {
   const message = req.body.message;
-  console.log(message);
-  const msg = `あなたは「${message}」と書きました`;
+  req.session.message = message;
   const data = {
     title: 'Hello',
-    content: msg
+    content: `Last message: ${req.session.message}`
   };
   res.render('hello', data);
 });
