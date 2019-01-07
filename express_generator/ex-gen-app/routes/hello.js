@@ -3,9 +3,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  const name = req.query.name;
+  const mail = req.query.mail;
   const data = {
     title: 'Hello',
-    content: 'これはサンプルのコンテンツです。<br>This is sample content.'
+    content: `あなたの名前は「${name}」<br>メールアドレスは「${mail}」`
   }
   res.render('hello', data);
 });
