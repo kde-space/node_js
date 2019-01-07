@@ -11,6 +11,34 @@
       <form action="/hello/post" method="post">
           <p><input type="text" name="message"><input type="submit" value="送信"></p>
       </form>
+      <p id="js-msg">Ajaxでデータを取得できます。idを入力してください</p>
+      <form id="ajax">
+        <p><input type="number" name="" id="ajaxInput"><input type="submit" value="GET"></p>
+      </form>
     </main>
+    <script>
+      const ajaxForm = document.getElementById('ajax');
+      const msgArea = document.getElementById('js-msg');
+      ajaxForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const idForRequest = ajaxForm.querySelector('#ajaxInput').value;
+        if (idForRequest < 0 || idForRequest > 2) return;
+        fetch(`/ajax?id=${idForRequest}`)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then(json => {
+          msgArea.innerHTML = `
+            <table>
+              <tr><th>名前</th><td>${json.name}</td></tr>
+              <tr><th>年齢</th><td>${json.age}</td></tr>
+              <tr><th>メール</th><td>${json.mail}</td></tr>
+            </table>
+          `;
+        });
+      })
+    </script>
   </body>
 </html>
