@@ -8,6 +8,9 @@
     <h1><%= title %></h1>
     <main>
       <p><%- content %></p>
+      <form action="/hello/post" method="post">
+          <p><input type="text" name="message"><input type="submit" value="送信"></p>
+      </form>
     </main>
   </body>
 </html>
