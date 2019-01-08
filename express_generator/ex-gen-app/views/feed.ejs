@@ -10,13 +10,14 @@
       <h1><%= title %></h1>
     </header>
     <main>
-      <% if (content !== null) { %>
-        <ol>
-          <% content.forEach(item => { %>
-            <li><a href="<%= item.link %>"><%= item.title %></a></li>
-          <% }) %>
-        </ol>
-      <% } %>
+      <ol>
+        <% content.forEach(item => { %>
+          <li><a href="<%= item.link %>"><%= item.title %></a></li>
+        <% }); %>
+      </ol>
+      <button id="js-feedBtn">ニュースを取得する</button>
+      <div id="js-feedArea"></div>
     </main>
+    <script src="/javascripts/feed.js"></script>
   </body>
 </html>
