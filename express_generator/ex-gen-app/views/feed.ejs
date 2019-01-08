@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <header>
+      <h1><%= title %></h1>
+    </header>
+    <main>
+      <% if (content !== null) { %>
+        <ol>
+          <% content.forEach(item => { %>
+            <li><a href="<%= item.link %>"><%= item.title %></a></li>
+          <% }) %>
+        </ol>
+      <% } %>
+    </main>
+  </body>
+</html>
