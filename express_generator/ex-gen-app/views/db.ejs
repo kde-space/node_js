@@ -9,14 +9,16 @@
       <h1><%= title %></h1>
     </header>
     <main>
-      <ol>
+      <table>
         <% content.forEach(item => { %>
-          <li><a href="<%= item.link %>"><%= item.title %></a></li>
+          <tr>
+            <th><%= item.id %></th>
+            <td><%= item.name %></td>
+            <td><%= item.mail %></td>
+            <td><%= item.age %></td>
+          </tr>
         <% }); %>
-      </ol>
-      <button id="js-feedBtn">ニュースを取得する</button>
-      <div id="js-feedArea"></div>
+      </table>
     </main>
-    <script src="/javascripts/feed.js"></script>
   </body>
 </html>
