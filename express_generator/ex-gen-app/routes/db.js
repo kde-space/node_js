@@ -33,24 +33,52 @@ router.get('/', function(req, res, next) {
 router.get('/add', (req, res, next) => {
   const data = {
     title: 'Db/add',
-    content: '新しいレコードを入力してください'
+    content: '新しいレコードを入力してください',
+    form: {
+      name: '',
+      mail: '',
+      age: 0
+    }
   };
   res.render('db/add', data);
 });
 
 // 新規作成フォーム送信の処理
 router.post('/add', (req, res, next) => {
-  const data = { name, mail, age } = req.body;
-  // コネクションの用意
-  const connection = mysql.createConnection(MYSQL_SETTING);
-  // DB接続
-  connection.connect();
-  // データを登録
-  connection.query('insert into userdata set ?', data, (error, results, fields) => {
-    res.redirect('/db');
+  req.check('name', 'NAME は必ず入力してください。').notEmpty();
+  req.check('mail', 'MAIL はメールアドレスを入力してください。').isEmail();
+  req.check('age', 'AGE は年齢（整数）を入力してください').isInt();
+
+  req.getValidationResult().then(result => {
+    console.log('result.isEmpty() :', result.isEmpty());
+    console.log('result.array() :', result.array());
+    if (!result.isEmpty()) {
+      let htmlOfError = '<ul class="error">';
+      const resultAry = result.array();
+      resultAry.forEach(item => {
+        htmlOfError += `<li>${item.msg}</li>`;
+      });
+      htmlOfError += '</ul>';
+      const data = {
+        title: 'Db/add',
+        content: htmlOfError,
+        form: req.body
+      };
+      res.render('db/add', data);
+    } else {
+      const data = { name, mail, age } = req.body;
+      // コネクションの用意
+      const connection = mysql.createConnection(MYSQL_SETTING);
+      // DB接続
+      connection.connect();
+      // データを登録
+      connection.query('insert into userdata set ?', data, (error, results, fields) => {
+        res.redirect('/db');
+      });
+      // DB接続解除
+      connection.end();
+    }
   });
-  // DB接続解除
-  connection.end();
 });
 
 // 指定レコードを表示

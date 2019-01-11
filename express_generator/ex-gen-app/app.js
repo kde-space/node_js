@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
+const validator = require('express-validator');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -31,6 +32,7 @@ const SESSION_OPTION = {
   cookie: { maxAge: 60 * 60 * 1000 }
 };
 app.use(session(SESSION_OPTION));
+app.use(validator());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
