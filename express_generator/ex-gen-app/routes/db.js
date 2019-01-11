@@ -1,13 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const mysql = require('mysql');
-
-const MYSQL_SETTING = {
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'my_node_app'
-};
+const MYSQL_SETTING = require('../db/setting');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
