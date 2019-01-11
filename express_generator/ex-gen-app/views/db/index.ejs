@@ -19,6 +19,27 @@
           </tr>
         <% }); %>
       </table>
+      <ul>
+        <li><a href="/db/add">新規追加</a></li>
+        <li>
+          <p>idを指定して表示</p>
+          <form action="/db/show" method="get">
+            <input type="number" name="id"><input type="submit" value="GET">
+          </form>
+        </li>
+        <li>
+          <p>idを指定して編集</p>
+          <form action="/db/edit" method="get">
+            <input type="number" name="id"><input type="submit" value="GET">
+          </form>
+        </li>
+        <li>
+          <p>idを指定して削除</p>
+          <form action="/db/delete" method="get">
+            <input type="number" name="id"><input type="submit" value="GET">
+          </form>
+        </li>
+      </ul>
     </main>
   </body>
 </html>
