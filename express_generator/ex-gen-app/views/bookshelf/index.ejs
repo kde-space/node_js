@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title><%= title %></title>
-  <link rel="stylesheet" href="stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
   <header>
@@ -26,6 +26,14 @@
         </tr>
       <% }); %>
     </table>
+    <ul>
+      <li><a href="/bookshelf/add">新規追加</a></li>
+      <li>
+        IDを指定して表示
+        <form action="/bookshelf/show" method="get">
+          <input type="number" name="id"><input type="submit" value="GET">
+        </form>
+    </ul>
   </main>
 </body>
 </html>
