@@ -55,4 +55,34 @@ router.get('/show', (req, res, next) => {
   connection.end();
 });
 
+router.get('/edit', (req, res, next) => {
+  const id = req.query.id;
+  const connection = mysql.createConnection(MYSQL_SETTING);
+  connection.connect();
+  connection.query('select * from userdata where id = ?', id, (error, results, fields) => {
+    if (error === null) {
+      const data = {
+        title: 'Bookshelf/show',
+        content: `id = ${id} のレコード`,
+        mydata: results[0]
+      };
+      res.render('bookshelf/edit', data);
+    }
+  });
+  connection.end();
+});
+
+router.post('/edit', (req, res, text) => {
+  const { id, name, mail, age } = req.body;
+  const data = { name, mail, age };
+  const connection = mysql.createConnection(MYSQL_SETTING);
+  connection.connect();
+  connection.query('update userdata set ? where id = ?', [data, id], (error, results, fields) => {
+    if (error === null) {
+      res.redirect('/bookshelf');
+    }
+  });
+  connection.end();
+});
+
 module.exports = router;
