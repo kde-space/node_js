@@ -72,12 +72,24 @@ router.get('/edit', (req, res, next) => {
   connection.end();
 });
 
-router.post('/edit', (req, res, text) => {
+router.post('/edit', (req, res, next) => {
   const { id, name, mail, age } = req.body;
   const data = { name, mail, age };
   const connection = mysql.createConnection(MYSQL_SETTING);
   connection.connect();
   connection.query('update userdata set ? where id = ?', [data, id], (error, results, fields) => {
+    if (error === null) {
+      res.redirect('/bookshelf');
+    }
+  });
+  connection.end();
+});
+
+router.get('/delete', (req, res, next) => {
+  const id = req.query.id;
+  const connection = mysql.createConnection(MYSQL_SETTING);
+  connection.connect();
+  connection.query('delete from userdata where id = ?', id, (error, results, fields) => {
     if (error === null) {
       res.redirect('/bookshelf');
     }
