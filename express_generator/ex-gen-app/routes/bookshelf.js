@@ -21,21 +21,47 @@ router.get('/', (req, res, next) => {
 router.get('/add', (req, res, next) => {
   const data = {
     title: 'Bookshelf/add',
-    content: '新しいレコードを入力'
+    content: '新しいレコードを入力',
+    form: {
+      name: '',
+      mail: '',
+      age: 0
+    }
   };
   res.render('bookshelf/add', data);
 });
 
 router.post('/add', (req, res, next) => {
-  const data = { name, mail, age } = req.body;
-  const connection = mysql.createConnection(MYSQL_SETTING);
-  connection.connect();
-  connection.query('insert into userdata set ?', data, (error, results, fields) => {
-    if (error === null) {
-      res.redirect('/bookshelf');
+  req.check('name', 'NAME は必ず入力してください').notEmpty();
+  req.check('mail', 'MAIL はメールアドレスを入力してください').isEmail();
+  req.check('age', 'AGE は年齢（整数）を入力してください').isInt();
+
+  req.getValidationResult().then(result => {
+    if (!result.isEmpty()) {
+      let errorMsg = '<ul class="error">';
+      const resultAry = result.array();
+      resultAry.forEach(item => {
+        errorMsg += `<li>${item.msg}</li>`
+      });
+      errorMsg += '</ul>';
+      const data = {
+        title: 'Bookshelf/add',
+        content: errorMsg,
+        form: req.body
+      };
+      res.render('bookshelf/add', data);
+    } else {
+      const data = { name, mail, age } = req.body;
+      const connection = mysql.createConnection(MYSQL_SETTING);
+      connection.connect();
+      connection.query('insert into userdata set ?', data, (error, results, fields) => {
+        if (error === null) {
+          res.redirect('/bookshelf');
+        }
+      });
+      connection.end();
     }
-  });
-  connection.end();
+  })
 });
 
 router.get('/show', (req, res, next) => {
