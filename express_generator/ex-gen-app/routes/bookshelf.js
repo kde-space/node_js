@@ -134,4 +134,31 @@ router.get('/delete', (req, res, next) => {
   connection.end();
 });
 
+router.get('/find', (req, res, next) => {
+  const data = {
+    title: 'Bookshelf/find',
+    content: '検索IDを入力',
+    form: {
+      fstr: ''
+    },
+    mydata: null
+  };
+  res.render('bookshelf/find', data);
+});
+
+router.post('/find', (req, res, next) => {
+  new UserData().where('id', '=', req.body.fstr).fetch()
+    .then((collection) => {
+      const data = {
+        title: 'Bookshelf',
+        content: `※id = ${req.body.fstr} の検索結果`,
+        form: {
+          fstr: req.body.fstr
+        },
+        mydata: collection
+      };
+      res.render('bookshelf/find', data);
+    });
+});
+
 module.exports = router;
