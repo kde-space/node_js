@@ -2,20 +2,37 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const MYSQL_SETTING = require('../db/setting');
+const knex = require('knex')({
+  dialect: 'mysql',
+  connection: {
+    ...MYSQL_SETTING,
+    ...{
+      charset: 'utf8'
+    }
+  }
+});
+const Bookshelf = require('bookshelf')(knex);
+const UserData = Bookshelf.Model.extend({
+  tableName: 'userdata'
+});
 
 router.get('/', (req, res, next) => {
-  const connection = mysql.createConnection(MYSQL_SETTING);
-  connection.connect();
-  connection.query('select * from userdata', (error, results, fields) => {
-    if (error === null) {
+  new UserData().fetchAll()
+    .then((collection) => {
       const data = {
         title: 'Bookshelf',
-        content: results
+        content: collection.toArray()
       };
       res.render('bookshelf/index', data);
-    }
-  })
-  connection.end();
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: true,
+        data: {
+          message: err.message
+        }
+      });
+    });
 });
 
 router.get('/add', (req, res, next) => {
