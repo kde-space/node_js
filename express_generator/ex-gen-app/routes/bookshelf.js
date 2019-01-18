@@ -21,7 +21,8 @@ router.get('/', (req, res, next) => {
     .then((collection) => {
       const data = {
         title: 'Bookshelf',
-        content: collection.toArray()
+        content: collection.toArray(),
+        pagination: null
       };
       res.render('bookshelf/index', data);
     })
@@ -158,6 +159,39 @@ router.post('/find', (req, res, next) => {
         mydata: collection
       };
       res.render('bookshelf/find', data);
+    });
+});
+
+Bookshelf.plugin('pagination');
+
+router.get('/:page', (req, res, next) => {
+  let pg = req.params.page;
+  pg *= 1;
+  if (pg < 1) {
+    pg = 1;
+  }
+  console.log(pg);
+  
+  new UserData().fetchPage({
+    page:pg,
+    pageSize: 3
+  })
+    .then(collection => {
+      const data = {
+        title: 'Bookshelf/index',
+        content: collection.toArray(),
+        pagination: collection.pagination
+      };
+      console.log(collection.pagination);
+      res.render('bookshelf/index', data);
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: true,
+        data: {
+          message: err.message
+        }
+      });
     });
 });
 

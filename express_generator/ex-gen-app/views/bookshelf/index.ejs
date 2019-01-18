@@ -27,6 +27,15 @@
         </tr>
       <% }); %>
     </table>
+    <% if (pagination !== null) { %>
+      <div>
+        <a href="/bookshelf/1">&lt;&lt; First</a> | 
+        <a href="/bookshelf/<%= pagination.page - 1 %>">&lt;&lt; Prev</a> | 
+        <a href="/bookshelf/<%= pagination.page + 1 %>">Next &gt;&gt;</a> | 
+        <a href="/bookshelf/<%= pagination.pageCount %>">Last &gt;&gt;</a>
+      </div>
+    <% } %>
+
     <ul>
       <li><a href="/bookshelf/add">新規追加</a></li>
       <li>
