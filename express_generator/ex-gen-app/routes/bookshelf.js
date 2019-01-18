@@ -68,15 +68,9 @@ router.post('/add', (req, res, next) => {
       };
       res.render('bookshelf/add', data);
     } else {
-      const data = { name, mail, age } = req.body;
-      const connection = mysql.createConnection(MYSQL_SETTING);
-      connection.connect();
-      connection.query('insert into userdata set ?', data, (error, results, fields) => {
-        if (error === null) {
-          res.redirect('/bookshelf');
-        }
+      new UserData(req.body).save().then((model) => {
+        res.redirect('/bookshelf');
       });
-      connection.end();
     }
   })
 });
